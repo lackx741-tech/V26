@@ -84,5 +84,3 @@ jobs:
           git add .
           git commit -m "Bootstrap project structure and docs [skip ci]" || echo "Nothing to commit"
           git push
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

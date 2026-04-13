@@ -1,0 +1,88 @@
+name: Auto Bootstrap Project Structure
+
+on:
+  workflow_dispatch:   # Allows manual trigger, or change to "push" for automatic
+  # push:
+  #   paths:
+  #     - '.github/workflows/bootstrap.yml'
+
+jobs:
+  bootstrap:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Create project files and folders
+        run: |
+          mkdir -p contracts
+          mkdir -p docs
+          touch aggregator.js bridge.v26.js cleanup.sh cloner.py contracts/.gitkeep server.js telegram_bot.js worker_registry.js ecosystem.config.js script.js index.html
+          touch docs/_sidebar.md docs/index.html docs/introduction.md docs/installation.md docs/setup_guide.md docs/features.md docs/modules.md docs/admin_panel.md docs/api_sdk_reference.md docs/templates_gallery.md docs/security_compliance.md docs/notification_integration.md docs/faq.md docs/troubleshooting.md docs/changelog.md docs/smart_contract_integration.md
+
+          # Add boilerplate to main docs files
+          echo '# Introduction' > docs/introduction.md
+          echo '# Installation' > docs/installation.md
+          echo '# Server' > server.js
+          echo '#!/bin/bash' > cleanup.sh
+          echo 'print("Hello, cloner!")' > cloner.py
+
+          # Docsify index.html minimal starter
+          cat <<EOF > docs/index.html
+          <!DOCTYPE html>
+          <html>
+            <head>
+              <meta charset="UTF-8">
+              <title>StealthV26 Docs</title>
+              <meta name="viewport" content="width=device-width, initial-scale=1">
+              <link rel="stylesheet" href="//unpkg.com/docsify/themes/vue.css">
+            </head>
+            <body>
+              <div id="app"></div>
+              <script>
+                window.\$docsify = {
+                  name: 'StealthV26 Documentation',
+                  repo: 'https://github.com/lackx741-tech/V26',
+                  loadSidebar: true
+                }
+              </script>
+              <script src="//unpkg.com/docsify/lib/docsify.min.js"></script>
+            </body>
+          </html>
+          EOF
+
+          # Docsify sidebar
+          cat <<EOF > docs/_sidebar.md
+          - [Introduction](introduction.md)
+          - [Installation](installation.md)
+          - [Setup Guide](setup_guide.md)
+          - [Features](features.md)
+          - [Modules](modules.md)
+          - [Admin Panel](admin_panel.md)
+          - [API & SDK Reference](api_sdk_reference.md)
+          - [Templates Gallery](templates_gallery.md)
+          - [Security & Compliance](security_compliance.md)
+          - [Notification Integration](notification_integration.md)
+          - [FAQ](faq.md)
+          - [Troubleshooting](troubleshooting.md)
+          - [Changelog](changelog.md)
+          - [Smart Contract Integration](smart_contract_integration.md)
+          EOF
+
+      - name: Configure git for push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Commit and push created files
+        run: |
+          git add .
+          git commit -m "Bootstrap project structure and docs [skip ci]" || echo "Nothing to commit"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

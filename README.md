@@ -17,3 +17,9 @@ Enterprise-ready Wallet-as-a-Service for secure, programmable, and multi-chain W
 - [FAQ](docs/faq.md)
 - [Troubleshooting](docs/troubleshooting.md)
 - [Changelog](docs/changelog.md)
+## Documentation
+- [Introduction](docs/introduction.md)
+- [Installation](docs/installation.md)
+- [Setup Guide](docs/setup_guide.md)
+- [Features](docs/features.md)
+- [More in /docs…](https://github.com/lackx741-tech/V26/tree/main/docs)
